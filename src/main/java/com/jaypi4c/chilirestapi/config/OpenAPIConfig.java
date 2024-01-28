@@ -11,41 +11,45 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+/**
+ * @author Jonas Pohl
+ */
 @Configuration
 public class OpenAPIConfig {
 
-  @Value("${jaypi4c.openapi.dev-url}")
-  private String devUrl;
 
-  @Value("${jaypi4c.openapi.prod-url}")
-  private String prodUrl;
+    @Value("${jaypi4c.openapi.dev-url}")
+    private String devUrl;
 
-  @Bean
-  public OpenAPI myOpenAPI() {
-    // https://www.bezkoder.com/spring-boot-swagger-3/
-    Server devServer = new Server();
-    devServer.setUrl(devUrl);
-    devServer.setDescription("Server URL in Development environment");
+    @Value("${jaypi4c.openapi.prod-url}")
+    private String prodUrl;
 
-    Server prodServer = new Server();
-    prodServer.setUrl(prodUrl);
-    prodServer.setDescription("Server URL in Production environment");
+    @Bean
+    public OpenAPI customOpenAPI() {
+        // https://www.bezkoder.com/spring-boot-swagger-3/
+        Server devServer = new Server();
+        devServer.setUrl(devUrl);
+        devServer.setDescription("Server URL in Development environment");
 
-    Contact contact = new Contact();
-    contact.setEmail("jonas.jp4c@gmail.com");
-    contact.setName("JayPi4c");
-    contact.setUrl("https://github.com/JayPi4c");
+        Server prodServer = new Server();
+        prodServer.setUrl(prodUrl);
+        prodServer.setDescription("Server URL in Production environment");
 
-    License mitLicense = new License().name("MIT License").url("https://choosealicense.com/licenses/mit/");
+        Contact contact = new Contact();
+        contact.setEmail("jonas.jp4c@gmail.com");
+        contact.setName("JayPi4c");
+        contact.setUrl("https://github.com/JayPi4c");
 
-    Info info = new Info()
-        .title("SoilData RET API")
-        .version("v1")
-        .contact(contact)
-        .description("This API exposes endpoints to manage soil data.")
-        // .termsOfService("https://www.bezkoder.com/terms")
-        .license(mitLicense);
+        License mitLicense = new License().name("MIT License").url("https://choosealicense.com/licenses/mit/");
 
-    return new OpenAPI().info(info).servers(List.of(devServer, prodServer));
-  }
+        Info info = new Info()
+                .title("SoilData RET API")
+                .version("v2")
+                .contact(contact)
+                .description("This API exposes endpoints to manage soil data.")
+                // .termsOfService("https://www.bezkoder.com/terms")
+                .license(mitLicense);
+
+        return new OpenAPI().info(info).servers(List.of(devServer, prodServer));
+    }
 }
